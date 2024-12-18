@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashesi Buddy-Up Program</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gray: #535555;
+            --dark-gray: #0a0a0a;
+            --accent-orange: #c97b14;
+            --white: #faf6f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-gray);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, var(--primary-gray), var(--dark-gray));
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--accent-orange);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .typewriter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            color: var(--white);
+            text-align: center;
+            width: 100%;
+        }
+
+        .typewriter_wrapper {
+            font-size: 2.5rem;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 0.15em solid var(--accent-orange);
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        .services-section {
+            padding: 50px;
+            display: flex;
+            align-items: start;
+            gap: 50px;
+            background-color: var(--dark-gray);
+        }
+
+        .services-image {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .services-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .services-list {
+            flex: 1;
+            color: var(--white);
+        }
+
+        .services-list h2 {
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+        }
+
+        .services-list ul {
+            list-style: none;
+        }
+
+        .services-list li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .services-list li:before {
+            content: "•";
+            color: var(--accent-orange);
+            position: absolute;
+            left: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--primary-gray);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            color: var(--white);
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            font-size: 28px;
+            color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: var(--white);
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-orange) }
+        }
+
+        .testimonials-section {
+            padding: 50px;
+            background-color: var(--primary-gray);
+            text-align: center;
+        }
+
+        .testimonials-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .testimonial-card {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .testimonial-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .stats-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 50px;
+            background-color: var(--dark-gray);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 10px;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .upcoming-events {
+            padding: 50px;
+            background-color: var(--primary-gray);
+        }
+
+        .events-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .event-card {
+            display: flex;
+            background-color: var(--dark-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 300px;
+            flex: 1;
+        }
+
+        .event-date {
+            background-color: var(--accent-orange);
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        .event-date .day {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .event-details {
+            padding: 20px;
+        }
+
+        .footer {
+            background-color: var(--dark-gray);
+            padding: 50px 50px 20px;
+            color: var(--white);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--primary-gray);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-container,
+            .stats-section,
+            .events-container,
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .event-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <img src="../../assets/img/logo.png" alt="Ashesi Buddy-Up" class="navbar-logo">
+            Ashesi Buddy-Up
+        </a>
+        <div class="navbar-links">
+            <a href="https://www.ashesi.edu.gh" target="_blank" class="btn">About Us</a>
+            <div class="auth-buttons">
+                <a href="../../auth/login.php" class="btn register-btn">Log in</a>
+                <a href="../../auth/choose_role.php" class="btn register-btn">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Updated Hero Section -->
+    <div class="hero-section">
+        <video class="hero-video" autoplay muted loop>
+            <source src="../../assets/img/friendseat.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="typewriter">
+            <div class="typewriter_wrapper">
+                Welcome to the Ashesi Buddy-Up Program
+            </div>
+            <h5 style="margin-top: 20px; font-size: 1.5rem;">Connecting Students, Fostering Lifelong Relationships</h5>
+        </div>
+    </div>
+
+    <section class="services-section">
+        <div class="services-image">
+            <img src="../../assets/img/together.jpg" alt="Buddy-Up Services">
+        </div>
+        <div class="services-list">
+            <h2>Our Services</h2>
+            <ul>
+                <li>Personalized mentorship matching between freshmen and continuing students</li>
+                <li>Faculty mentorship programs for academic and professional guidance</li>
+                <li>Interactive workshops and networking events</li>
+                <li>Comprehensive resource hub for academic materials</li>
+                <li>Regular social activities and community building events</li>
+                <li>Career development and professional growth opportunities</li>
+                <li>Cultural integration support for international students</li>
+                <li>Academic support and study groups</li>
+                <li>Personal development workshops</li>
+                <li>Leadership development programs</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- After services-section -->
+    <section class="testimonials-section">
+        <h2>What Our Students Say</h2>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <img src="../../assets/img/frin.jpg" alt="Student Testimonial" class="testimonial-img">
+                <p class="testimonial-text">"The Buddy-Up Program made my transition to Ashesi seamless. My mentor has become a lifelong friend!"</p>
+                <h4>Sarah Johnson</h4>
+                <p class="student-info">Class of 2024</p>
+            </div>
+            <div class="testimonial-card">
+                <img src="../../assets/img/smilie.jpg" alt="Student Testimonial" class="testimonial-img">
+                <p class="testimonial-text">"Being a mentor has been incredibly rewarding. I've grown as much as my mentee!"</p>
+                <h4>David Mensah</h4>
+                <p class="student-info">Class of 2023</p>
+            </div>
+            <div class="testimonial-card">
+                <img src="../../assets/img/together.jpg" alt="Student Testimonial" class="testimonial-img">
+                <p class="testimonial-text">"The workshops and networking events have opened so many doors for my career."</p>
+                <h4>Aisha Mohammed</h4>
+                <p class="student-info">Class of 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>500+</h3>
+            <p>Active Mentorship Pairs</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-calendar-check"></i>
+            <h3>50+</h3>
+            <p>Events Per Semester</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>95%</h3>
+            <p>Student Satisfaction</p>
+        </div>
+    </section>
+
+    <section class="upcoming-events">
+        <h2>Upcoming Events</h2>
+        <div class="events-container">
+            <div class="event-card">
+                <div class="event-date">
+                    <span class="day">15</span>
+                    <span class="month">MAY</span>
+                </div>
+                <div class="event-details">
+                    <h3>Career Networking Night</h3>
+                    <p><i class="fas fa-clock"></i> 6:00 PM - 8:00 PM</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Norton Motulsky Hall</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-date">
+                    <span class="day">22</span>
+                    <span class="month">MAY</span>
+                </div>
+                <div class="event-details">
+                    <h3>Leadership Workshop</h3>
+                    <p><i class="fas fa-clock"></i> 2:00 PM - 4:00 PM</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Engineering Building</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> buddyup@ashesi.edu.gh</p>
+                <p><i class="fas fa-phone"></i> +233 20 123 4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> 1 University Avenue, Berekuso</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Program Guidelines</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Ashesi Buddy-Up Program. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <!-- Same login modal content as before -->
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <!-- Same register modal content as before -->
+    </div>
+</body>
+</html>
